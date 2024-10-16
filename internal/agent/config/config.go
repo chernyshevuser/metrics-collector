@@ -2,18 +2,20 @@ package config
 
 import (
 	"flag"
+
 	configgetter "github.com/chernyshevuser/practicum-metrics-collector/tools/configgetter"
+	"github.com/chernyshevuser/practicum-metrics-collector/tools/crypto"
 	"github.com/chernyshevuser/practicum-metrics-collector/tools/logger"
 )
 
 const (
-	AddrEnv           = getter.ConfigKey("ADDRESS")
-	ReportIntervalEnv = getter.ConfigKey("REPORT_INTERVAL")
-	PollIntervalEnv   = getter.ConfigKey("POLL_INTERVAL")
-	HashKeyEnv        = getter.ConfigKey("KEY")
-	RateLimitEnv      = getter.ConfigKey("RATE_LIMIT")
-	FixedIVStrEnv     = getter.ConfigKey("SYPHER")
-	CryptoKeyPathEnv  = getter.ConfigKey("CRYPTO_KEY")
+	AddrEnv           = configgetter.ConfigKey("ADDRESS")
+	ReportIntervalEnv = configgetter.ConfigKey("REPORT_INTERVAL")
+	PollIntervalEnv   = configgetter.ConfigKey("POLL_INTERVAL")
+	HashKeyEnv        = configgetter.ConfigKey("KEY")
+	RateLimitEnv      = configgetter.ConfigKey("RATE_LIMIT")
+	FixedIVStrEnv     = configgetter.ConfigKey("SYPHER")
+	CryptoKeyPathEnv  = configgetter.ConfigKey("CRYPTO_KEY")
 )
 
 var (
@@ -98,7 +100,7 @@ func Setup(logger logger.Logger) {
 		FixedIVStr = fixedIVStr
 	}
 
-	cryptoKeyPath, err := getter.GetConfigString(CryptoKeyPathEnv)
+	cryptoKeyPath, err := configgetter.GetConfigString(CryptoKeyPathEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",

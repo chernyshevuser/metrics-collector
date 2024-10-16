@@ -2,19 +2,20 @@ package config
 
 import (
 	"flag"
-	"github.com/chernyshevuser/practicum-metrics-collector/tools/crypto"
+
 	configgetter "github.com/chernyshevuser/practicum-metrics-collector/tools/configgetter"
+	"github.com/chernyshevuser/practicum-metrics-collector/tools/crypto"
 	"github.com/chernyshevuser/practicum-metrics-collector/tools/logger"
 )
 
 const (
-	AddrEnv            = getter.ConfigKey("ADDRESS")
-	StoreIntervalEnv   = getter.ConfigKey("STORE_INTERVAL")
-	FileStoragePathEnv = getter.ConfigKey("FILE_STORAGE_PATH")
-	RestoreEnv         = getter.ConfigKey("RESTORE")
-	DatabaseDsnEnv     = getter.ConfigKey("DATABASE_DSN")
-	HashKeyEnv         = getter.ConfigKey("KEY")
-	CryptoKeyPathEnv   = getter.ConfigKey("CRYPTO_KEY")
+	AddrEnv            = configgetter.ConfigKey("ADDRESS")
+	StoreIntervalEnv   = configgetter.ConfigKey("STORE_INTERVAL")
+	FileStoragePathEnv = configgetter.ConfigKey("FILE_STORAGE_PATH")
+	RestoreEnv         = configgetter.ConfigKey("RESTORE")
+	DatabaseDsnEnv     = configgetter.ConfigKey("DATABASE_DSN")
+	HashKeyEnv         = configgetter.ConfigKey("KEY")
+	CryptoKeyPathEnv   = configgetter.ConfigKey("CRYPTO_KEY")
 )
 
 var (
@@ -99,7 +100,7 @@ func Setup(logger logger.Logger) {
 		HashKey = hashKey
 	}
 
-	cryptoKeyPath, err := getter.GetConfigString(CryptoKeyPathEnv)
+	cryptoKeyPath, err := configgetter.GetConfigString(CryptoKeyPathEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
