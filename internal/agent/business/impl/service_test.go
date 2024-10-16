@@ -251,7 +251,7 @@ func TestRun_collectAllMetrics(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		time.Sleep(2 * time.Second)
+		time.Sleep(1500 * time.Millisecond)
 		s.Close()
 	}()
 
