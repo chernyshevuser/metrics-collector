@@ -2,9 +2,7 @@ package config
 
 import (
 	"flag"
-
-	getter "github.com/chernyshevuser/practicum-metrics-collector/tools/config-getter"
-	"github.com/chernyshevuser/practicum-metrics-collector/tools/crypto"
+	configgetter "github.com/chernyshevuser/practicum-metrics-collector/tools/configgetter"
 	"github.com/chernyshevuser/practicum-metrics-collector/tools/logger"
 )
 
@@ -40,7 +38,7 @@ func Setup(logger logger.Logger) {
 
 	flag.Parse()
 
-	addr, err := getter.GetConfigString(AddrEnv)
+	addr, err := configgetter.GetConfigString(AddrEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -50,7 +48,7 @@ func Setup(logger logger.Logger) {
 		Addr = addr
 	}
 
-	reportInterval, err := getter.GetConfigInt64(ReportIntervalEnv)
+	reportInterval, err := configgetter.GetConfigInt64(ReportIntervalEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -60,7 +58,7 @@ func Setup(logger logger.Logger) {
 		ReportInterval = reportInterval
 	}
 
-	pollInterval, err := getter.GetConfigInt64(PollIntervalEnv)
+	pollInterval, err := configgetter.GetConfigInt64(PollIntervalEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -70,7 +68,7 @@ func Setup(logger logger.Logger) {
 		PollInterval = pollInterval
 	}
 
-	hashKey, err := getter.GetConfigString(HashKeyEnv)
+	hashKey, err := configgetter.GetConfigString(HashKeyEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -80,7 +78,7 @@ func Setup(logger logger.Logger) {
 		HashKey = hashKey
 	}
 
-	rateLimit, err := getter.GetConfigInt64(RateLimitEnv)
+	rateLimit, err := configgetter.GetConfigInt64(RateLimitEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -90,7 +88,7 @@ func Setup(logger logger.Logger) {
 		RateLimit = rateLimit
 	}
 
-	fixedIVStr, err := getter.GetConfigString(FixedIVStrEnv)
+	fixedIVStr, err := configgetter.GetConfigString(FixedIVStrEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",

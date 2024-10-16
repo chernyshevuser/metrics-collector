@@ -2,13 +2,10 @@ package config
 
 import (
 	"flag"
-
-	getter "github.com/chernyshevuser/practicum-metrics-collector/tools/config-getter"
 	"github.com/chernyshevuser/practicum-metrics-collector/tools/crypto"
+	configgetter "github.com/chernyshevuser/practicum-metrics-collector/tools/configgetter"
 	"github.com/chernyshevuser/practicum-metrics-collector/tools/logger"
 )
-
-type configKey string
 
 const (
 	AddrEnv            = getter.ConfigKey("ADDRESS")
@@ -42,7 +39,7 @@ func Setup(logger logger.Logger) {
 
 	flag.Parse()
 
-	addr, err := getter.GetConfigString(AddrEnv)
+	addr, err := configgetter.GetConfigString(AddrEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -52,7 +49,7 @@ func Setup(logger logger.Logger) {
 		Addr = addr
 	}
 
-	storeInterval, err := getter.GetConfigInt64(StoreIntervalEnv)
+	storeInterval, err := configgetter.GetConfigInt64(StoreIntervalEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -62,7 +59,7 @@ func Setup(logger logger.Logger) {
 		StoreInterval = storeInterval
 	}
 
-	fileStoragePath, err := getter.GetConfigString(FileStoragePathEnv)
+	fileStoragePath, err := configgetter.GetConfigString(FileStoragePathEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -72,7 +69,7 @@ func Setup(logger logger.Logger) {
 		FileStoragePath = fileStoragePath
 	}
 
-	restore, err := getter.GetConfigBool(RestoreEnv)
+	restore, err := configgetter.GetConfigBool(RestoreEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -82,7 +79,7 @@ func Setup(logger logger.Logger) {
 		Restore = restore
 	}
 
-	databaseDsn, err := getter.GetConfigString(DatabaseDsnEnv)
+	databaseDsn, err := configgetter.GetConfigString(DatabaseDsnEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
@@ -92,7 +89,7 @@ func Setup(logger logger.Logger) {
 		DatabaseDsn = databaseDsn
 	}
 
-	hashKey, err := getter.GetConfigString(HashKeyEnv)
+	hashKey, err := configgetter.GetConfigString(HashKeyEnv)
 	if err != nil {
 		logger.Errorw(
 			"can't get env",
