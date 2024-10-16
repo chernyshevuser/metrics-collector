@@ -4,7 +4,7 @@ import (
 	"flag"
 
 	configgetter "github.com/chernyshevuser/practicum-metrics-collector/tools/configgetter"
-
+	"github.com/chernyshevuser/practicum-metrics-collector/tools/crypto"
 	"github.com/chernyshevuser/practicum-metrics-collector/tools/logger"
 )
 
@@ -15,6 +15,7 @@ const (
 	HashKeyEnv        = configgetter.ConfigKey("KEY")
 	RateLimitEnv      = configgetter.ConfigKey("RATE_LIMIT")
 	FixedIVStrEnv     = configgetter.ConfigKey("SYPHER")
+	CryptoKeyPathEnv  = configgetter.ConfigKey("CRYPTO_KEY")
 )
 
 var (
@@ -24,6 +25,8 @@ var (
 	HashKey        string
 	RateLimit      int64
 	FixedIVStr     string
+	CryptoKey      string
+	CryptoKeyPath  string
 )
 
 func Setup(logger logger.Logger) {
@@ -33,6 +36,7 @@ func Setup(logger logger.Logger) {
 	flag.StringVar(&HashKey, "k", "", "hash key")
 	flag.Int64Var(&RateLimit, "l", 2, "rate limit")
 	flag.StringVar(&FixedIVStr, "S", "1234567890123456", "sypher")
+	flag.StringVar(&CryptoKey, "crypto-key", "", "fpath with crypto key")
 
 	flag.Parse()
 
@@ -94,5 +98,22 @@ func Setup(logger logger.Logger) {
 		)
 	} else {
 		FixedIVStr = fixedIVStr
+	}
+
+	cryptoKeyPath, err := configgetter.GetConfigString(CryptoKeyPathEnv)
+	if err != nil {
+		logger.Errorw(
+			"can't get env",
+			"msg", err,
+		)
+	} else {
+		CryptoKeyPath = cryptoKeyPath
+	}
+
+	if CryptoKeyPath != "" {
+		CryptoKey, err = crypto.LoadFromFile(CryptoKeyPath)
+		if err != nil {
+			logger.Errorw("can't parse file with crypto key", "msg", err)
+		}
 	}
 }

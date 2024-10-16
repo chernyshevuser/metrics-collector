@@ -4,6 +4,7 @@ import (
 	"flag"
 
 	configgetter "github.com/chernyshevuser/practicum-metrics-collector/tools/configgetter"
+	"github.com/chernyshevuser/practicum-metrics-collector/tools/crypto"
 	"github.com/chernyshevuser/practicum-metrics-collector/tools/logger"
 )
 
@@ -14,6 +15,7 @@ const (
 	RestoreEnv         = configgetter.ConfigKey("RESTORE")
 	DatabaseDsnEnv     = configgetter.ConfigKey("DATABASE_DSN")
 	HashKeyEnv         = configgetter.ConfigKey("KEY")
+	CryptoKeyPathEnv   = configgetter.ConfigKey("CRYPTO_KEY")
 )
 
 var (
@@ -23,6 +25,8 @@ var (
 	Restore         bool
 	DatabaseDsn     string
 	HashKey         string
+	CryptoKeyPath   string
+	CryptoKey       string
 )
 
 func Setup(logger logger.Logger) {
@@ -32,6 +36,7 @@ func Setup(logger logger.Logger) {
 	flag.BoolVar(&Restore, "r", true, "restore flag")
 	flag.StringVar(&DatabaseDsn, "d", "", "database data source name")
 	flag.StringVar(&HashKey, "k", "", "hash key")
+	flag.StringVar(&CryptoKeyPath, "crypto-key", "", "fpath with crypto key")
 
 	flag.Parse()
 
@@ -95,13 +100,20 @@ func Setup(logger logger.Logger) {
 		HashKey = hashKey
 	}
 
-	logger.Infow(
-		"envs",
-		"addr", Addr,
-		"storeInterval", StoreInterval,
-		"fileStoragePath", FileStoragePath,
-		"restore", Restore,
-		"databaseDsn", DatabaseDsn,
-		"hashKey", HashKey,
-	)
+	cryptoKeyPath, err := configgetter.GetConfigString(CryptoKeyPathEnv)
+	if err != nil {
+		logger.Errorw(
+			"can't get env",
+			"msg", err,
+		)
+	} else {
+		CryptoKeyPath = cryptoKeyPath
+	}
+
+	if CryptoKeyPath != "" {
+		CryptoKey, err = crypto.LoadFromFile(CryptoKeyPath)
+		if err != nil {
+			logger.Errorw("can't parse file with crypto key", "msg", err)
+		}
+	}
 }
